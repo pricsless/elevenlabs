@@ -1,0 +1,23 @@
+const { exec } = require('child_process');
+
+function slowDownAudio(inputFile, outputFile, factor) {
+  return new Promise((resolve, reject) => {
+    const command = `sox ${inputFile} ${outputFile} tempo ${factor}`;
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error executing command:', error.message);
+        return reject(error);
+      }
+      if (stderr) {
+        console.error('Error:', stderr);
+        return reject(new Error(stderr));
+      }
+      resolve(stdout);
+    });
+  });
+}
+
+// Usage:
+slowDownAudio('input.mp3', 'output.mp3', '1.5')
+  .then(stdout => console.log('Audio slowed down successfully:', stdout))
+  .catch(error => console.error(error));
