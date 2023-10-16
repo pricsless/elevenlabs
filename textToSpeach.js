@@ -39,7 +39,7 @@ async function textToSpeech(text, userId) {
 }
 
 function cleanupAudio(audioDir) {
-  fs.rmdir(audioDir, { recursive: true }, (err) => {
+  fs.rm(audioDir, { recursive: true }, (err) => {
     if (err) {
       console.error(`Error deleting directory: ${err.message}`);
     } else {
