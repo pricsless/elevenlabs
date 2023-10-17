@@ -17,4 +17,4 @@ RUN npm install
 USER node
 
 # Run the bot
-CMD ["node", "index.js"]
+CMD ["node", "/usr/src/app/index.js"]
