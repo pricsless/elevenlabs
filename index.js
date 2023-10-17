@@ -85,6 +85,7 @@ bot.on("callback_query", async (query) => {
         await bot.sendAudio(chatId, audioStream, {
           caption: "@elvenlabsBot",
         });
+        cleanupAudio(userId); // Call cleanupAudio here with userId
       } else {
         bot.sendMessage(
           chatId,

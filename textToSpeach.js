@@ -38,8 +38,9 @@ async function textToSpeech(text, userId) {
   }
 }
 
-function cleanupAudio(audioDir) {
-  fs.rm(audioDir, { recursive: true }, (err) => {
+function cleanupAudio(userId) {
+  const audioDir = `./audio/${userId}`;
+  fs.rm(audioDir, { recursive: true, force: true }, (err) => {
     if (err) {
       console.error(`Error deleting directory: ${err.message}`);
     } else {
