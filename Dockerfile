@@ -1,5 +1,5 @@
-# Use the official Node.js image as a base image
-FROM node:20.8.0
+# Use a stable version of Node.js
+FROM node:16
 
 # Install Sox
 RUN apt-get update && apt-get install -y sox
@@ -10,8 +10,14 @@ COPY . /usr/src/app
 # Set the working directory
 WORKDIR /usr/src/app
 
+# Ensure index.js is executable
+RUN chmod +x /usr/src/app/index.js
+
 # Install the project dependencies
 RUN npm install
+
+# Specify the user to run the commands
+USER node
 
 # Run the bot
 CMD ["node", "index.js"]
