@@ -1,10 +1,23 @@
 const TelegramBot = require("node-telegram-bot-api");
 const fs = require("fs");
+const express = require("express");
 require("dotenv").config();
 const { textToSpeech, cleanupAudio } = require("./textToSpeach");
 
 const TOKEN = process.env.TELEGRAM_TOKEN;
 const bot = new TelegramBot(TOKEN, { polling: true, filepath: false });
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get("/", (req, res) => res.send("Hello World!"));
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+  setInterval(() => {
+    require("http").get(`http://your-app.herokuapp.com`);
+  }, 10 * 60 * 1000); // every 25 minutes
+});
 
 const lastUserMessage = {};
 const CHANNEL_USERNAME = "@Spotife";
