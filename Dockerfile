@@ -1,9 +1,6 @@
 # Use a stable version of Node.js
 FROM node:16
 
-# Install Sox
-RUN apt-get update && apt-get install -y sox
-
 # Copy the local project files into the container
 COPY . /usr/src/app
 

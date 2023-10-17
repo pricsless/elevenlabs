@@ -1,7 +1,6 @@
 const TelegramBot = require("node-telegram-bot-api");
 const fs = require("fs");
 require("dotenv").config();
-const { exec } = require("child_process");
 const { textToSpeech, cleanupAudio } = require("./textToSpeach");
 
 const TOKEN = process.env.TELEGRAM_TOKEN;
@@ -73,19 +72,6 @@ bot.on("callback_query", async (query) => {
         await bot.sendAudio(chatId, audioStream, {
           caption: "@elvenlabsBot",
         });
-        const pitchOptions = {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: "Yes", callback_data: "pitch_yes" }],
-              [{ text: "No", callback_data: "pitch_no" }],
-            ],
-          },
-        };
-        bot.sendMessage(
-          chatId,
-          `Do you want to make the voice deeper ?`,
-          pitchOptions
-        );
       } else {
         bot.sendMessage(
           chatId,
@@ -97,34 +83,6 @@ bot.on("callback_query", async (query) => {
         chatId,
         "I didn't catch that. Please send the text again."
       );
-    }
-  } else if (query.data === "pitch_yes" || query.data === "pitch_no") {
-    const audioDir = `./audio/${userId}`;
-    const audioPath = `${audioDir}/output.mp3`;
-    if (query.data === "pitch_yes") {
-      exec(
-        `sox ${audioPath} ${audioDir}/output2.mp3 pitch -375`,
-        async (error, stdout, stderr) => {
-          if (error) {
-            console.error(
-              `Error executing pitch modification: ${error.message}`
-            );
-            return;
-          }
-          const modifiedAudioStream = fs.createReadStream(
-            `${audioDir}/output2.mp3`
-          );
-          await bot.sendAudio(chatId, modifiedAudioStream, {
-            caption: "@elvenlabsBot",
-          });
-
-          cleanupAudio(audioDir);
-        }
-      );
-    } else {
-      setTimeout(() => {
-        cleanupAudio(audioDir);
-      }, 5000); // 600000 milliseconds = 10 minutes
     }
   }
 });
